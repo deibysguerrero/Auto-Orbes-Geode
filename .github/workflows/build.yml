@@ -14,8 +14,10 @@ jobs:
         config:
           - name: Windows
             os: windows-latest
+            target: Win
           - name: Android
             os: ubuntu-latest
+            target: Android
 
     name: ${{ matrix.config.name }}
     runs-on: ${{ matrix.config.os }}
@@ -27,14 +29,14 @@ jobs:
       - name: Build Geode Mod
         uses: geode-sdk/build-geode-mod@main
         with:
-          # Usamos la rama principal de los bindings
-          bindings-ref: main
+          # Aquí pasamos directamente el valor de la plataforma desde la matriz
+          target: ${{ matrix.config.target }}
           combine: true
-          target: ${{ matrix.config.name == 'Android' && 'Android' || '' }}
 
       - name: Upload Artifacts
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.config.name }}-Package
           path: "*.geode"
+
           
