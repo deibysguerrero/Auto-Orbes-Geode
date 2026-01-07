@@ -7,36 +7,35 @@ on:
       - main
 
 jobs:
-  build:
-    strategy:
-      fail-fast: false
-      matrix:
-        config:
-          - name: Windows
-            os: windows-latest
-            target: Win
-          - name: Android
-            os: ubuntu-latest
-            target: Android
-
-    name: ${{ matrix.config.name }}
-    runs-on: ${{ matrix.config.os }}
-
+  build-win:
+    name: Windows Build
+    runs-on: windows-latest
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v4
-
-      - name: Build Geode Mod
-        uses: geode-sdk/build-geode-mod@main
+      - uses: actions/checkout@v4
+      - uses: geode-sdk/build-geode-mod@main
         with:
-          # Aquí pasamos directamente el valor de la plataforma desde la matriz
-          target: ${{ matrix.config.target }}
+          target: Win
           combine: true
 
-      - name: Upload Artifacts
+      - name: Upload Windows
         uses: actions/upload-artifact@v4
         with:
-          name: ${{ matrix.config.name }}-Package
+          name: Windows-Package
           path: "*.geode"
 
-          
+  build-android:
+    name: Android Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: geode-sdk/build-geode-mod@main
+        with:
+          target: Android
+          combine: true
+
+      - name: Upload Android
+        uses: actions/upload-artifact@v4
+        with:
+          name: Android-Package
+          path: "*.geode"
+
