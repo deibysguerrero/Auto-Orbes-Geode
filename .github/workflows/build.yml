@@ -25,9 +25,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build Mod
-        uses: geode-sdk/build-geode-mod@main
+        # Cambiado a v2 para mayor estabilidad
+        uses: geode-sdk/build-geode-mod@v2
         with:
-          bindings: geode-sdk/bindings
           combine: true
           target: ${{ matrix.config.name == 'Android' && 'Android' || '' }}
 
